@@ -11,20 +11,33 @@ $(function() {
         
 
 	$(".app_box").live('touchstart', function() {
-		$(this).addClass("bg_white");
+		var id = $(this).html();
+		mm.boxList[id].touchStart();
+		
 	});
 	$(".app_box").live('touchmove', function( e ) {
 		var id = $(this).html();
 		boxTouchmove(id);
 	});
 	$(".app_box").live('touchend', function() {
-		$(this).removeClass("bg_white");
+		var id = $(this).html();
+		mm.boxList[id].touchEnd();
+
 	});
-});                                                                   
+  
+	
+	var fCanvas = document.getElementById("line_canvas");
+	cx = fCanvas.getContext("2d");
+	
+	mm.start();
+}); 
+
+var cx = null;
+                                                                  
 
 function boxTouchmove( id ) {
-	$("#box_" + id).css("left",  event.targetTouches[0].clientX - BOX_SIZE/2);                
-	$("#box_" + id).css("top",  event.targetTouches[0].clientY - BOX_SIZE/2);
+	mm.boxList[id].moveTo(event.targetTouches[0].clientX,
+		event.targetTouches[0].clientY);
 }
 
 function shieldDefault( e ) {
@@ -32,6 +45,4 @@ function shieldDefault( e ) {
 }           
 
 
-
-var BOX_SIZE = 66;
 

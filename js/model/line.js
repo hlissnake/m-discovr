@@ -3,15 +3,16 @@
 var Line = Class.extend({
     init: function(id) {
 		this.id	= id;
-        this.x	= 480;
-		this.y	= 320;
-		this.dir = 10000;
-		this.dirState = DIR_STATE_NONE;
-		this.dirStateK	= DIR_STATE_ZOMBIE_K;
-		this.v	= 0.0;
-		this.a	= 0;
-		this.box = null;
+		this.lBox = null;
+		this.rBox = null;
+		
+		this.isLive = false;
     },
+	born: function( l, r) {
+		this.isLive = true;
+		this.lBox = l;
+		this.rBox = r;
+	},
 	show: function() {
 		this.box.show();
 	},
@@ -19,3 +20,23 @@ var Line = Class.extend({
 		this.box.hide();
 	}
 });
+
+function getLinePoolId() {
+	for (var i=0; i < LINE_LIST_NUM; i++) {
+		if (mm.lineList[i].isLive == false) {
+			return i;
+		}
+	}                
+	alert("line list none!");
+	return LINE_LIST_NUM - 1;
+}
+
+function getBoxPoolId() {
+	for (var i=0; i < BOX_LIST_NUM; i++) {
+		if (mm.boxList[i].isLive == false) {
+			return i;
+		}
+	}                
+	alert("box list none!");
+	return BOX_LIST_NUM - 1;
+}

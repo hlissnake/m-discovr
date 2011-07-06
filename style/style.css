@@ -20,13 +20,12 @@ body{
 }
 
 #line_canvas{
-	width: 1024px;
-	height: 700px;
+	position: fixed;
 	top: 0;
 	left: 0;
+	right: 0;
 	background: aqua;
-	position: absolute;
-	z-index: -1;
+	
 }
 
 #app_box_div {
@@ -34,16 +33,5 @@ body{
 	height: 700px;
 	top: 0;
 	left: 0;
-	background: yellow;
 	position: fixed;
-}
-
-#box_1{
-	top: 100px;
-	left: 200px;
-}
-
-#box_2{
-	top: 100px;
-	left: 400px;
 }
