@@ -5,9 +5,9 @@ $(function() {
 	document.addEventListener("touchmove", shieldDefault, false );
 	document.addEventListener("touchend", shieldDefault, false );
 	document.addEventListener("touchcancel", shieldDefault, false );
-	document.addEventListener("gesturestart", shieldDefault, false );
-	document.addEventListener("gesturechange", shieldDefault, false );
-	document.addEventListener("gestureend", shieldDefault, false );
+	// document.addEventListener("gesturestart", shieldDefault, false );
+	// document.addEventListener("gesturechange", shieldDefault, false );
+	// document.addEventListener("gestureend", shieldDefault, false );  
         
 
 	$(".app_box").live('touchstart', function() {
@@ -24,8 +24,14 @@ $(function() {
 		mm.boxList[id].touchEnd();
 
 	});
-  
 	
+	$("#log_btn").click(function(){
+		
+	});
+  
+	$("#log_btn").bind('touchstart', function() {
+		$("#log_list").toggle();
+	});
 	var fCanvas = document.getElementById("line_canvas");
 	cx = fCanvas.getContext("2d");
 	

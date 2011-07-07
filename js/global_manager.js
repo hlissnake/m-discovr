@@ -21,7 +21,8 @@ var GlobalManager = Class.extend({
         this.drawIntervalId = setInterval(this.drawLoop, FPS_TIME);
 
 		this.newGame();
-
+        
+		log.log("start...");
     },
 	newGame: function() {
 		mm.boxList[0].born(480,320);        
