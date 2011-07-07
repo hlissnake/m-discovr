@@ -9,10 +9,13 @@ var AppBox = Class.extend({
 		
 		this.dir = 10000;
 		this.v	= 0.0;
-		this.a	= 0;
+
 		this.box = null;
 		this.isLive = false;
 		this.isClick = false;
+		this.onPress = false;
+		
+		this.antialienBox = null;
     },
 	born: function(x, y) {
 		this.isLive = true;
@@ -28,7 +31,21 @@ var AppBox = Class.extend({
 		this.y = y;
 		this.box.css("left",  x - BOX_SIZE/2);                
 		this.box.css("top",  y - BOX_SIZE/2);
-		this.isClick = false;
+
+	},
+	eventLoop: function() {
+		var dTime = 10;
+		this.vx0 = this.vx;
+		this.vy0 = this.vy;
+		
+		this.vx = this.vx + this.ax * dTime;
+		this.vy = this.vy + this.ay * dTime;
+		
+		this.sx = (this.vx0 + this.vx) / 2 * dTime;
+		this.sy = (this.vy0 + this.vy) / 2 * dTime;
+		
+		this.moveTo(this.x + this.sx, this.y + this.sy);
+		
 	},
 	show: function() {
 		this.box.show();
@@ -38,6 +55,7 @@ var AppBox = Class.extend({
 	},
 	touchStart: function() {
 		this.isClick = true;
+		this.onPress = true;
 		
 		this.box.addClass("bg_white");
 	},
@@ -46,10 +64,39 @@ var AppBox = Class.extend({
 			this.click();
 		}
 		this.isClick = false;
+		this.onPress = false;
 		
-		 this.box.removeClass("bg_white");
+		this.box.removeClass("bg_white");
 	},
 	click: function() {
-		mm.addBoxes(this, 1)
+		mm.addBoxes(this, 1);
 	}
-});
+});         
+
+
+
+
+function doAntialienBoxes( box1, box2 ) {
+	if ( box1.x == box2.x) {
+		box1.vx = 0;
+	}
+	else {
+		var dx = 1 / (box1.x - box2.x);
+		box1.vx = dx>0 ? K_A_ANTIALIEN : - K_A_ANTIALIEN ;
+		box2.vx = dx<0 ? K_A_ANTIALIEN : - K_A_ANTIALIEN ;
+	}
+	if ( box1.y == box2.y) {
+		box1.vy = 0;
+	}
+	else {
+		var dy = 1 / (box1.y - box2.y);
+		box1.vy = dy>0 ? K_A_ANTIALIEN : - K_A_ANTIALIEN ;
+		box2.vy = dy<0 ? K_A_ANTIALIEN : - K_A_ANTIALIEN ;
+	}
+	
+
+	
+	
+	box1.antialienBox = null;
+	box2.antialienBox = null;
+}

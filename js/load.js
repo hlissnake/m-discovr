@@ -47,6 +47,7 @@ var cx = null;
 function boxTouchmove( id ) {
 	mm.boxList[id].moveTo(event.targetTouches[0].clientX,
 		event.targetTouches[0].clientY);
+	mm.boxList[id].isClick = false;         
 }
 
 function shieldDefault( e ) {

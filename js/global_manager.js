@@ -33,22 +33,39 @@ var GlobalManager = Class.extend({
 			var newBox = this.boxList[ getBoxPoolId() ];
 			newBox.born(parentBox.x, parentBox.y - 10);
 			this.lineList[ getLinePoolId() ].born(parentBox, newBox);
-		}            
+		}          
 
 	},
 	eventLoop: function() {
 		for(var i=0; i < BOX_LIST_NUM - 1; i++) {
-			if ( mm.boxList[i].isLive == false ) {
+			if ( mm.boxList[i].isLive == false 
+				|| mm.boxList[i].antialienBox != null) {
 				continue;
 			}            
 			for (var j = i+1; j < BOX_LIST_NUM; j++) {
-				
+				if ( mm.boxList[j].isLive == false ) {
+					continue;
+				}
+				if ( isAntialienBoxes( mm.boxList[i], mm.boxList[j] ) ) {
+					mm.boxList[i].antialienBox = mm.boxList[j];
+					mm.boxList[j].antialienBox = mm.boxList[i];
+				}
 			}
 		}
+		
+		for(var i=0; i < BOX_LIST_NUM - 1; i++) {
+			if ( mm.boxList[i].isLive == false ) {
+				continue;
+			}            
+			if ( mm.boxList[i].antialienBox != null ) {
+				doAntialienBoxes(mm.boxList[i], mm.boxList[i].antialienBox);
+			}
+			mm.boxList[i].eventLoop();
+		}
 		//处理排斥
-		//
-		//
-		//
+		
+		
+		
 	},
 	drawLoop: function() {
 		cx.clearRect(0, 0, 1024, 1024);
