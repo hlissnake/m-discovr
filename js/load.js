@@ -28,7 +28,10 @@ $(function() {
 	$("#log_btn").click(function(){
 		
 	});
-  
+    
+	$("#debug_btn").bind('touchstart', function() {
+		mm.onDebug = mm.onDebug == true ? false:true;
+	});
 	$("#log_btn").bind('touchstart', function() {
 		$("#log_list").toggle();
 	});

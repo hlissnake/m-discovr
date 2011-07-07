@@ -11,6 +11,7 @@ var GlobalManager = Class.extend({
 			var line = new Line(i);
 			this.lineList[i] = line;
 		}
+		this.onDebug = true;
 		
     },
 	/** 开始游戏 */
@@ -36,7 +37,18 @@ var GlobalManager = Class.extend({
 
 	},
 	eventLoop: function() {
-		
+		for(var i=0; i < BOX_LIST_NUM - 1; i++) {
+			if ( mm.boxList[i].isLive == false ) {
+				continue;
+			}            
+			for (var j = i+1; j < BOX_LIST_NUM; j++) {
+				
+			}
+		}
+		//处理排斥
+		//
+		//
+		//
 	},
 	drawLoop: function() {
 		cx.clearRect(0, 0, 1024, 1024);
@@ -55,6 +67,20 @@ var GlobalManager = Class.extend({
 		}
 		cx.closePath();
         cx.stroke();
+
+		if( mm.onDebug == true ) {
+			cx.strokeStyle = HSLA_ANTIALIEN;
+	        cx.beginPath();
+			for (var i = 0; i < BOX_LIST_NUM; i++) {
+				if ( mm.boxList[i].isLive == true ) {
+					cx.moveTo(mm.boxList[i].x + RADIUS_ANTIALIEN, mm.boxList[i].y);
+					cx.arc(mm.boxList[i].x, mm.boxList[i].y, RADIUS_ANTIALIEN, 0, Math.PI*2, true );
+				}
+
+			}
+			cx.closePath();
+	        cx.stroke();
+		}
 		
 		cx.restore();
 	}
