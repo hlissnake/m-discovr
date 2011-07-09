@@ -25,7 +25,7 @@ var Log = Class.extend({
 		var date = new Date();
 		return "[" + date.getMinutes() + ":" 
 			+ date.getSeconds() + ":" 
-			+ date.getMilliseconds() + "]" + str +"|";
+			+ date.getMilliseconds() + "]\t" + str +"|";
 	},
 	
 	showLog:function( str ) {

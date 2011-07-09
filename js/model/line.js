@@ -6,12 +6,21 @@ var Line = Class.extend({
 		this.lBox = null;
 		this.rBox = null;
 		
+		this.wantL = LINE_WANT_L;
+		
 		this.isLive = false;
     },
 	born: function( l, r) {
 		this.isLive = true;
 		this.lBox = l;
 		this.rBox = r;
+	},
+	eventLoop: function() {
+		var dL = distance(this.lBox, this.rBox) - this.wantL;
+		
+		if ( dL*dL > 16 ) {
+			doHukeBoxes(this.lBox, this.rBox, dL);
+		}
 	},
 	show: function() {
 		this.box.show();

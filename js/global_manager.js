@@ -33,7 +33,8 @@ var GlobalManager = Class.extend({
 			var newBox = this.boxList[ getBoxPoolId() ];
 			newBox.born(parentBox.x, parentBox.y - 10);
 			this.lineList[ getLinePoolId() ].born(parentBox, newBox);
-		}          
+		}  
+		log.log("box:" + parentBox.id + "|生了" + num + "个小孩子");        
 
 	},
 	eventLoop: function() {
@@ -46,9 +47,12 @@ var GlobalManager = Class.extend({
 				if ( mm.boxList[j].isLive == false ) {
 					continue;
 				}
-				if ( isAntialienBoxes( mm.boxList[i], mm.boxList[j] ) ) {
+				var dDis = RADIUS_ANTIALIEN*2 - distance( mm.boxList[i], mm.boxList[j] );
+				
+				if ( dDis > 0 ) {
 					mm.boxList[i].antialienBox = mm.boxList[j];
 					mm.boxList[j].antialienBox = mm.boxList[i];
+					doAntialienBoxes(mm.boxList[i], mm.boxList[j]);
 				}
 			}
 		}
@@ -57,13 +61,17 @@ var GlobalManager = Class.extend({
 			if ( mm.boxList[i].isLive == false ) {
 				continue;
 			}            
-			if ( mm.boxList[i].antialienBox != null ) {
-				doAntialienBoxes(mm.boxList[i], mm.boxList[i].antialienBox);
-			}
+
 			mm.boxList[i].eventLoop();
 		}
 		//处理排斥
 		
+		for(var i=0; i < LINE_LIST_NUM; i++) {
+			if ( mm.lineList[i].isLive == false ) {
+				continue;
+			}
+			mm.lineList[i].eventLoop();
+		}
 		
 		
 	},

@@ -7,7 +7,7 @@ var AppBox = Class.extend({
 		this.y	= 320;
 		this.boxLines = new Array();
 		
-		this.dir = 10000;
+		this.dir = 10000 * 0;
 		this.v	= 0.0;
 
 		this.box = null;
@@ -35,17 +35,12 @@ var AppBox = Class.extend({
 	},
 	eventLoop: function() {
 		var dTime = 10;
-		this.vx0 = this.vx;
-		this.vy0 = this.vy;
-		
-		this.vx = this.vx + this.ax * dTime;
-		this.vy = this.vy + this.ay * dTime;
-		
-		this.sx = (this.vx0 + this.vx) / 2 * dTime;
-		this.sy = (this.vy0 + this.vy) / 2 * dTime;
+		tmp_role_v = this.v * dTime;
+		this.sx = tmp_role_v * Math.cos( this.dir/10000 );
+		this.sy = tmp_role_v * Math.sin( this.dir/10000 );
 		
 		this.moveTo(this.x + this.sx, this.y + this.sy);
-		
+		this.v = 0;
 	},
 	show: function() {
 		this.box.show();
@@ -69,7 +64,12 @@ var AppBox = Class.extend({
 		this.box.removeClass("bg_white");
 	},
 	click: function() {
-		mm.addBoxes(this, 1);
+		mm.addBoxes(this, 3);
+	},
+	setV: function( v ) {
+		if ( this.onPress == false ) {
+			this.v = v;
+		}
 	}
 });         
 
@@ -77,26 +77,35 @@ var AppBox = Class.extend({
 
 
 function doAntialienBoxes( box1, box2 ) {
-	if ( box1.x == box2.x) {
-		box1.vx = 0;
-	}
-	else {
-		var dx = 1 / (box1.x - box2.x);
-		box1.vx = dx>0 ? K_A_ANTIALIEN : - K_A_ANTIALIEN ;
-		box2.vx = dx<0 ? K_A_ANTIALIEN : - K_A_ANTIALIEN ;
-	}
-	if ( box1.y == box2.y) {
-		box1.vy = 0;
-	}
-	else {
-		var dy = 1 / (box1.y - box2.y);
-		box1.vy = dy>0 ? K_A_ANTIALIEN : - K_A_ANTIALIEN ;
-		box2.vy = dy<0 ? K_A_ANTIALIEN : - K_A_ANTIALIEN ;
-	}
-	
 
+	var k = slopeRoles(box1, box2);
+	
+	box1.setV( K_V_ANTIALIEN );
+	box2.setV( K_V_ANTIALIEN );
+    box1.dir = k;
+	box2.dir = ( k + 31416 ) % 62832;
 	
 	
 	box1.antialienBox = null;
 	box2.antialienBox = null;
+}
+
+function doHukeBoxes( box1, box2, dL ) {
+	var k = slopeRoles(box1, box2);
+	
+	box1.setV( K_V_HUKE );
+	box2.setV( K_V_HUKE );
+	
+	if ( dL > 0 ) {
+		box1.dir = ( k + 31416 ) % 62832;
+		box2.dir = k;
+	}
+	else {
+		box1.dir = k;
+		box2.dir = ( k + 31416 ) % 62832;
+	}
+    
+
+	
+	
 }
