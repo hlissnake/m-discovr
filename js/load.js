@@ -39,6 +39,10 @@ $(function() {
 	cx = fCanvas.getContext("2d");
 	
 	mm.start();
+	
+	$("#control_btn a").live('touchstart', function() {
+		location.href="https://github.com/merlyle/m-discovr";
+	});
 }); 
 
 var cx = null;
